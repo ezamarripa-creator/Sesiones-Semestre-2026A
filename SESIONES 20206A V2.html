@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendario Académico · Semestre 2026-A</title>
+  <!-- Font Awesome (iconos) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(145deg, #f6f9fc 0%, #eef2f7 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem 1.5rem;
+    }
+
+    .card {
+      max-width: 1400px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border-radius: 2.8rem;
+      padding: 2.8rem 3rem;
+      box-shadow: 0 30px 50px -12px rgba(0, 20, 40, 0.3), 0 8px 20px rgba(0,0,0,0.05);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      transition: all 0.2s ease;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #0b1e33;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .subhead {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 2.2rem;
+      border-bottom: 2px solid rgba(0, 40, 80, 0.08);
+      padding-bottom: 1.2rem;
+    }
+
+    .subhead h1 i {
+      color: #1e5b8c;
+      font-size: 2.6rem;
+    }
+
+    .badge-semestre {
+      background: #1e5b8c;
+      color: white;
+      padding: 0.6rem 1.8rem;
+      border-radius: 60px;
+      font-weight: 500;
+      font-size: 1.2rem;
+      letter-spacing: 0.3px;
+      box-shadow: 0 4px 8px rgba(30, 91, 140, 0.2);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 2.5rem;
+      margin: 2rem 0 2.5rem 0;
+    }
+
+    /* tabla periodos */
+    .periodos-table-wrapper {
+      background: white;
+      border-radius: 2rem;
+      padding: 1.6rem 1.2rem 1.2rem 1.2rem;
+      box-shadow: 0 12px 30px -10px rgba(0, 20, 40, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      transition: 0.15s;
+    }
+
+    .periodos-table-wrapper h2 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #1a334a;
+      padding-left: 0.5rem;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .periodos-table-wrapper h2 i {
+      color: #2f7bb5;
+      font-size: 1.6rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 1.05rem;
+    }
+
+    thead tr {
+      background: #eef4fa;
+      border-radius: 20px;
+    }
+
+    th {
+      text-align: left;
+      padding: 1rem 0.8rem 1rem 1.2rem;
+      font-weight: 600;
+      color: #1f4462;
+      letter-spacing: 0.2px;
+      font-size: 1.05rem;
+      border-bottom: 2px solid #d5e0ec;
+    }
+
+    td {
+      padding: 1rem 0.8rem 1rem 1.2rem;
+      border-bottom: 1px solid #e7edf5;
+      color: #1e3347;
+      vertical-align: middle;
+      font-size: 1rem;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .parcial-tag {
+      background: #d4e2f0;
+      color: #0d2b44;
+      font-weight: 600;
+      padding: 0.3rem 0.9rem;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      display: inline-block;
+      letter-spacing: 0.3px;
+    }
+
+    .observacion {
+      font-size: 0.9rem;
+      color: #4f6f8a;
+      background: #f0f5fc;
+      padding: 0.2rem 0.8rem;
+      border-radius: 30px;
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    .dias-inhabiles i {
+      color: #b13e3e;
+      margin-right: 4px;
+    }
+
+    /* horas al parcial */
+    .horas-card {
+      background: white;
+      border-radius: 2rem;
+      padding: 1.6rem 1.5rem 1.2rem 1.5rem;
+      box-shadow: 0 12px 30px -10px rgba(0, 20, 40, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .horas-card h2 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #1a334a;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-left: 0.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .horas-card h2 i {
+      color: #2f7bb5;
+      font-size: 1.6rem;
+    }
+
+    .horas-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .parcial-horas {
+      background: #f6faff;
+      border-radius: 1.6rem;
+      padding: 1rem 1.4rem;
+      border-left: 6px solid #2f7bb5;
+      transition: 0.1s;
+    }
+
+    .parcial-horas .parcial-title {
+      font-weight: 600;
+      color: #144164;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.15rem;
+    }
+
+    .parcial-horas .parcial-title i {
+      font-size: 1rem;
+      color: #3c7db0;
+    }
+
+    .horas-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 1.2rem;
+      font-size: 1rem;
+      color: #1f3f5a;
+    }
+
+    .horas-row span {
+      background: #e5eefa;
+      padding: 0.2rem 0.9rem;
+      border-radius: 40px;
+      font-size: 0.95rem;
+      display: inline-block;
+    }
+
+    .horas-row strong {
+      font-weight: 600;
+      color: #0b2c47;
+      font-size: 1.05rem;
+    }
+
+    .proyectos {
+      margin-top: 2.2rem;
+      background: linear-gradient(135deg, #e6f0fa 0%, #d7e6f5 100%);
+      border-radius: 2.4rem;
+      padding: 1.6rem 2.2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 6px 14px rgba(30, 70, 110, 0.08);
+    }
+
+    .proyectos .proy-text {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .proyectos .proy-text i {
+      font-size: 2rem;
+      color: #1a5c8a;
+    }
+
+    .proyectos .proy-text h3 {
+      font-weight: 600;
+      font-size: 1.3rem;
+      color: #0b2e4a;
+    }
+
+    .proyectos .proy-fechas {
+      background: white;
+      padding: 0.5rem 2rem;
+      border-radius: 60px;
+      font-weight: 500;
+      color: #0b2e4a;
+      font-size: 1.1rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+
+    .proyectos .proy-integracion {
+      background: #1e5b8c;
+      color: white;
+      padding: 0.5rem 1.8rem;
+      border-radius: 60px;
+      font-weight: 500;
+      font-size: 1.05rem;
+      letter-spacing: 0.2px;
+    }
+
+    .badge-icon {
+      background: #1e5b8c10;
+      padding: 0.2rem 0.8rem;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      color: #1f4b70;
+    }
+
+    /* responsive */
+    @media (max-width: 1000px) {
+      .grid-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .card {
+        padding: 2rem 1.8rem;
+      }
+
+      .proyectos {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      .subhead {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+      }
+
+      th, td {
+        padding: 0.8rem 0.4rem 0.8rem 0.6rem;
+        font-size: 0.9rem;
+      }
+      .observacion {
+        white-space: normal;
+      }
+      .periodos-table-wrapper {
+        padding: 0.8rem;
+      }
+      .card {
+        padding: 1.2rem;
+      }
+      .horas-row span {
+        font-size: 0.85rem;
+      }
+    }
+
+    /* Interactividad */
+    .periodos-table-wrapper tr:hover {
+      background: #f2f8ff;
+      transition: 0.1s;
+    }
+
+    .parcial-horas:hover {
+      background: #eaf3fe;
+      border-left-width: 10px;
+      transition: 0.1s;
+    }
+
+    .proyectos .proy-text i {
+      transition: transform 0.2s;
+    }
+    .proyectos:hover .proy-text i {
+      transform: scale(1.1);
+    }
+
+    /* detalles */
+    .detalle-semanas {
+      font-weight: 500;
+      background: #e9f0f8;
+      padding: 0.1rem 0.5rem;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      color: #1e4e72;
+      display: inline-block;
+    }
+    .semana-num {
+      background: #dce6f2;
+      padding: 0.2rem 0.8rem;
+      border-radius: 30px;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+    .badge-semestre i {
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+<div class="card">
+  <!-- encabezado -->
+  <div class="subhead">
+    <h1>
+      <i class="fas fa-calendar-alt"></i> Calendario Académico
+    </h1>
+    <span class="badge-semestre"><i class="fas fa-graduation-cap"></i> Semestre 2026-A</span>
+  </div>
+
+  <!-- Grid: tabla periodos + horas parcial -->
+  <div class="grid-container">
+    <!-- tabla periodos parciales -->
+    <div class="periodos-table-wrapper">
+      <h2><i class="fas fa-clock"></i> Periodos parciales</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Parcial</th>
+            <th>Periodo</th>
+            <th>Integración</th>
+            <th>Semanas</th>
+            <th>Inhábiles</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="parcial-tag"><i class="fas fa-circle" style="color:#1f7bb5; font-size: 0.6rem; margin-right: 6px;"></i> Primero</span></td>
+            <td>31 ago – 2 oct 2026</td>
+            <td>5, 6, 7 oct</td>
+            <td><span class="semana-num">5</span></td>
+            <td><span class="observacion"><i class="fas fa-calendar-times"></i> 16 sep</span></td>
+          </tr>
+          <tr>
+            <td><span class="parcial-tag" style="background:#c5d9ed;"><i class="fas fa-circle" style="color:#2f7bb5; font-size: 0.6rem; margin-right: 6px;"></i> Segundo</span></td>
+            <td>5 oct – 6 nov 2026</td>
+            <td>9, 10, 11 nov</td>
+            <td><span class="semana-num">5</span></td>
+            <td><span class="observacion" style="background: #e7f0f5;"><i class="far fa-calendar-check"></i> Sin inhábiles</span></td>
+          </tr>
+          <tr>
+            <td><span class="parcial-tag" style="background:#b3cde0;"><i class="fas fa-circle" style="color:#1f5b85; font-size: 0.6rem; margin-right: 6px;"></i> Tercero</span></td>
+            <td>9 nov – 11 dic 2026</td>
+            <td>14, 15, 16 dic</td>
+            <td><span class="semana-num">5</span></td>
+            <td><span class="observacion"><i class="fas fa-calendar-times"></i> 20 nov</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="padding: 0.8rem 0.2rem 0.2rem 0.2rem; font-size: 0.9rem; color: #3f688b; display: flex; gap: 16px; flex-wrap: wrap;">
+        <span><i class="fas fa-info-circle"></i> Integración: días de evaluación</span>
+        <span><i class="fas fa-hourglass-half"></i> 5 semanas c/u</span>
+      </div>
+    </div>
+
+    <!-- Horas al parcial -->
+    <div class="horas-card">
+      <h2><i class="fas fa-hourglass-start"></i> Horas al parcial</h2>
+      <div class="horas-grid">
+        <!-- primero -->
+        <div class="parcial-horas">
+          <div class="parcial-title"><i class="fas fa-arrow-right" style="color:#1e6a9f;"></i> Primer parcial</div>
+          <div class="horas-row">
+            <span><strong>7h</strong> 34 h totales</span>
+            <span><strong>5h</strong> 24 h</span>
+            <span><strong>4h</strong> 19 h</span>
+            <span><strong>3h</strong> 14 h</span>
+            <span><strong>2h</strong> 9 h</span>
+          </div>
+        </div>
+        <!-- segundo -->
+        <div class="parcial-horas" style="border-left-color: #3a8fcb;">
+          <div class="parcial-title"><i class="fas fa-arrow-right" style="color:#1e6a9f;"></i> Segundo parcial</div>
+          <div class="horas-row">
+            <span><strong>7h</strong> 35 h</span>
+            <span><strong>5h</strong> 25 h</span>
+            <span><strong>4h</strong> 20 h</span>
+            <span><strong>3h</strong> 15 h</span>
+            <span><strong>2h</strong> 10 h</span>
+          </div>
+        </div>
+        <!-- tercero -->
+        <div class="parcial-horas" style="border-left-color: #579bcb;">
+          <div class="parcial-title"><i class="fas fa-arrow-right" style="color:#1e6a9f;"></i> Tercer parcial</div>
+          <div class="horas-row">
+            <span><strong>7h</strong> 34 h</span>
+            <span><strong>5h</strong> 24 h</span>
+            <span><strong>4h</strong> 19 h</span>
+            <span><strong>3h</strong> 14 h</span>
+            <span><strong>2h</strong> 9 h</span>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 0.8rem; font-size: 0.9rem; color: #3d688b; padding-left: 0.2rem;">
+        <i class="fas fa-chart-simple"></i> Distribución según carga horaria semanal
+      </div>
+    </div>
+  </div>
+
+  <!-- Proyectos Escolares Comunitarios -->
+  <div class="proyectos">
+    <div class="proy-text">
+      <i class="fas fa-people-arrows"></i>
+      <h3>Proyectos Escolares Comunitarios</h3>
+    </div>
+    <div class="proy-fechas">
+      <i class="far fa-calendar-alt"></i> 14 dic 2026 – 8 ene 2027
+    </div>
+    <div class="proy-integracion">
+      <i class="fas fa-clipboard-check"></i> Integración: 11, 12, 13 ene
+    </div>
+  </div>
+
+  <!-- minifooter interactivo (detalle extra) -->
+  <div style="margin-top: 2rem; display: flex; flex-wrap: wrap; justify-content: flex-end; font-size: 0.9rem; color: #34658a; gap: 1.8rem; border-top: 1px solid rgba(40, 80, 120, 0.08); padding-top: 1.4rem;">
+    <span><i class="fas-regular fa-calendar-check"></i> Inicio de clases: 31 de agosto 2026</span>
+    <span><i class="fas-regular fa-flag"></i> Fin de parciales: 16 de diciembre 2026</span>
+    <span><i class="fas-regular fa-clock"></i> 3 periodos · 5 semanas c/u</span>
+  </div>
+</div>
+</body>
+</html>
